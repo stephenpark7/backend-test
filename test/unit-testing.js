@@ -13,10 +13,14 @@ const userData = {
 const userTweetData = {
   message: "Test Message"
 }
+const userMessageData = {
+  message: "Test Message"
+}
 
-/* Unit tests */
+// Unit tests
 describe("Account Testing", function () {
   this.timeout(5000);
+  /* Users */
   it("Create a new account", (done) => {
     chai.request(server)
     .post("/api/users/signup")
@@ -43,6 +47,7 @@ describe("Account Testing", function () {
       done();
     });
   });
+  /* Tweets */
   it("Create tweet", (done) => {
     chai.request(server)
     .post("/api/tweets/")
@@ -61,7 +66,6 @@ describe("Account Testing", function () {
     .get("/api/tweets/")
     .set('content-type', 'application/x-www-form-urlencoded')
     .set('x-access-token', userData.accessToken)
-    .send(userTweetData)
     .end(function (err, res) {
       if (err) done(err);
       expect(res.text).to.not.equal('Failed to get all tweets.');
@@ -89,6 +93,55 @@ describe("Account Testing", function () {
     .end(function (err, res) {
       if (err) done(err);
       expect(res.text).to.not.equal('Failed to delete tweet.');
+      done();
+    });
+  });
+  /* Messages */
+  it("Create message", (done) => {
+    chai.request(server)
+    .post("/api/messages/")
+    .set('content-type', 'application/x-www-form-urlencoded')
+    .set('x-access-token', userData.accessToken)
+    .send({ recipient_user_id: userData.user_id, message: userMessageData.message })
+    .end(function (err, res) {
+      if (err) done(err);
+      expect(res.text).to.not.equal('Failed to create message.');
+      userData.message = res.body;
+      done();
+    });
+  });
+  it("Get all messages", (done) => {
+    chai.request(server)
+    .get("/api/messages/")
+    .set('content-type', 'application/x-www-form-urlencoded')
+    .set('x-access-token', userData.accessToken)
+    .end(function (err, res) {
+      if (err) done(err);
+      expect(res.text).to.not.equal('Failed to get all messages.');
+      done();
+    });
+  });
+  it("Update a message", (done) => {
+    chai.request(server)
+    .put("/api/messages/")
+    .set('content-type', 'application/x-www-form-urlencoded')
+    .set('x-access-token', userData.accessToken)
+    .send({ message_id: userData.message.message_id, message: 'New Message After Updating' })
+    .end(function (err, res) {
+      if (err) done(err);
+      expect(res.text).to.not.equal('Failed to update message.');
+      done();
+    });
+  });
+  it("Delete a message", (done) => {
+    chai.request(server)
+    .put("/api/messages/")
+    .set('content-type', 'application/x-www-form-urlencoded')
+    .set('x-access-token', userData.accessToken)
+    .send({ message_id: userData.message.message_id })
+    .end(function (err, res) {
+      if (err) done(err);
+      expect(res.text).to.not.equal('Failed to delete message.');
       done();
     });
   });

@@ -16,7 +16,7 @@ exports.createMessage = async (req, res) => {
     const recipientUserData = await User.findOne({
       attributes: ['user_id'],
       where: {
-        recipient_user_id: recipient_user_id
+        user_id: recipient_user_id
       },
     });
     if (!recipientUserData) return;
@@ -30,7 +30,7 @@ exports.createMessage = async (req, res) => {
 exports.getAllMessages = async (req, res) => {
   try {
     const userMessageData = await Message.findAll({
-      attributes: ['message_id', 'text', 'sender_user_id', 'recipient_user_id', 'createdAt'],
+      attributes: ['message_id', 'sender_user_id', 'recipient_user_id', 'text', 'createdAt'],
       include: [{
         model: User,
         attributes: ['username']

@@ -28,8 +28,8 @@ db.Message = require("./models/message.model")(sequelize, Sequelize);
 db.User.hasMany(db.Tweet, { foreignKey: 'user_id' });
 db.Tweet.belongsTo(db.User, { foreignKey: 'user_id' });
 
-// db.User.hasMany(db.Message, { foreignKey: 'sender_user_id' });
-// db.Message.belongsTo(db.User, { foreignKey: 'user_id' });
+db.User.hasMany(db.Message, { foreignKey: 'sender_user_id' });
+db.Message.belongsTo(db.User, { foreignKey: 'sender_user_id' });
 
 const events = [
   {name: 'beforeExit', exitCode: 0 },
