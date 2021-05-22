@@ -21,6 +21,7 @@ app.use(express.urlencoded({ extended: true }));
 // api routing
 app.use('/api/users', require('./api/users'));
 app.use('/api/tweets', require('./api/tweets'));
+app.use('/api/messages', require('./api/messages'));
 
 // start server
 const server = app.listen(SERVER_PORT, () => {

@@ -7,9 +7,12 @@ chai.use(chaiHttp);
 
 // Test data
 const userData = {
-  username: 'z',
-  password: 'z'
+  username: 'a',
+  password: 'a'
 };
+const userTweetData = {
+  message: "Test Message"
+}
 
 /* Unit tests */
 describe("Account Testing", function () {
@@ -35,6 +38,57 @@ describe("Account Testing", function () {
       expect(res.text).to.not.equal('Missing field(s)');
       expect(res.text).to.not.equal('Username does not exist.');
       expect(res.text).to.not.equal('Incorrect password.');
+      userData.user_id = res.body.user_id;
+      userData.accessToken = res.body.accessToken;
+      done();
+    });
+  });
+  it("Create tweet", (done) => {
+    chai.request(server)
+    .post("/api/tweets/")
+    .set('content-type', 'application/x-www-form-urlencoded')
+    .set('x-access-token', userData.accessToken)
+    .send(userTweetData)
+    .end(function (err, res) {
+      if (err) done(err);
+      expect(res.text).to.not.equal('Failed to create tweet.');
+      userData.tweet = res.body;
+      done();
+    });
+  });
+  it("Get all tweets", (done) => {
+    chai.request(server)
+    .get("/api/tweets/")
+    .set('content-type', 'application/x-www-form-urlencoded')
+    .set('x-access-token', userData.accessToken)
+    .send(userTweetData)
+    .end(function (err, res) {
+      if (err) done(err);
+      expect(res.text).to.not.equal('Failed to get all tweets.');
+      done();
+    });
+  });
+  it("Update a tweet", (done) => {
+    chai.request(server)
+    .put("/api/tweets/")
+    .set('content-type', 'application/x-www-form-urlencoded')
+    .set('x-access-token', userData.accessToken)
+    .send({ tweet_id: userData.tweet.tweet_id, message: 'New Tweet Message After Updating' })
+    .end(function (err, res) {
+      if (err) done(err);
+      expect(res.text).to.not.equal('Failed to update tweet.');
+      done();
+    });
+  });
+  it("Delete a tweet", (done) => {
+    chai.request(server)
+    .put("/api/tweets/")
+    .set('content-type', 'application/x-www-form-urlencoded')
+    .set('x-access-token', userData.accessToken)
+    .send({ tweet_id: userData.tweet.tweet_id })
+    .end(function (err, res) {
+      if (err) done(err);
+      expect(res.text).to.not.equal('Failed to delete tweet.');
       done();
     });
   });
