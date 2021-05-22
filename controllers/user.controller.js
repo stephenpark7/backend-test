@@ -9,7 +9,6 @@ const jwtSecret = process.env.JWT_SECRET;
 // Create a new account
 exports.create = async (req, res) => {
   const { username, password } = req.body;
-  console.log(req.body);
 
   // Check for missing fields
   if (!username || !password) {
@@ -39,10 +38,8 @@ exports.create = async (req, res) => {
     password: hashedPassword,
     display_name: username,
   }).then(user => {
-    // console.log(user);
     res.status(200).send('Successfully created an account.');
   }).catch(err => {
-    // console.log(err);
     res.status(400).send('Failed to create an account.');
   });
 }

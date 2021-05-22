@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "server": "nodemon index.js"
+    "server": "nodemon index.js",
+    "test": "mocha test/*.js"
   },
   "author": "Stephen Park",
   "license": "ISC",
@@ -19,5 +20,10 @@
     "pg-hstore": "^2.3.3",
     "sequelize": "^6.3.3",
     "validator": "^13.1.1"
+  },
+  "devDependencies": {
+    "chai": "^4.3.4",
+    "chai-http": "^4.3.0",
+    "mocha": "^8.4.0"
   }
 }

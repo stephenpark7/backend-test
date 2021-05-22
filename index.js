@@ -23,6 +23,8 @@ app.use('/api/users', require('./api/users'));
 app.use('/api/tweets', require('./api/tweets'));
 
 // start server
-app.listen(SERVER_PORT, () => {
+const server = app.listen(SERVER_PORT, () => {
   console.log('Server started at port ' + SERVER_PORT);
 });
+
+module.exports = server;

@@ -14,7 +14,7 @@ exports.createTweet = async (req, res) => {
     });
     res.status(200).json(userTweet);
   } catch(err) {
-    res.status(400).send('Failed to create an account.');
+    res.status(400).send('Failed to create tweet.');
   }
 }
 
@@ -33,7 +33,7 @@ exports.getAllTweets = async (req, res) => {
     });
     res.status(200).json(userTweetData);
   } catch(err) {
-    res.status(400).send('Failed to get tweets.');
+    res.status(400).send('Failed to get all tweets.');
   }
 }
 
@@ -78,29 +78,6 @@ exports.deleteTweet = async (req, res) => {
     await userTweetData.destroy();
     res.status(200).json(userTweetData);
   } catch(err) {
-    res.status(400).send('Failed to update tweet.');
-  }
-}
-
-// Get all tweets for current user
-exports.self = async (req, res) => {
-  if (!req.userId) return;
-  try {
-    const userTweetData = await Tweet.findAll({
-      attributes: ['text', 'reply_count', 'retweet_count', 'createdAt'],
-      where: {
-        user_id: req.userId 
-      },
-      include: [{
-        model: User,
-        attributes: ['username']
-      }],
-      order: [
-        ['tweet_id', 'DESC'],
-      ],
-    });
-    res.status(200).json(userTweetData);
-  } catch(err) {
-    res.status(400).send('Failed to get tweets.');
+    res.status(400).send('Failed to delete tweet.');
   }
 }

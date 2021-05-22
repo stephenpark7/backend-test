@@ -23,9 +23,4 @@ router.delete('/', auth, async (req, res) => {
   await tweetsController.deleteTweet(req, res);
 });
 
-// Get all tweets for self
-router.get('/self', auth, async (req, res) => {
-  await tweetsController.self(req, res);
-});
-
 module.exports = router;
